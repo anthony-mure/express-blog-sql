@@ -5,19 +5,13 @@ const connection = require('../data/db.js');
 //rotta INDEX
 const index = (req, res) =>{
 
-  //recupero i parametri passati da query string
-  const tag = req.query.tags;
+  const sql = "SELECT * FROM posts";
 
-  //definisco un array da restituire
-  let filteredPosts = posts;
+  connection.query(sql, (err, results) =>{
 
-  //controllo il valore di tags e se esiste eseguo il filtraggio
-  if(tag){
-    filteredPosts = posts.filter(item => item.tags.includes(tag.toLowerCase()));
-  };
-
-  res.json(filteredPosts);
-
+    if(err) return res.status(500).json({ error: "Errore durante l'esecuzione della quesry:" +err});
+     res.json(results);
+  });
 };
 
 //rotta SHOW
