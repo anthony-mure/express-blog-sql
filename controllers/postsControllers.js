@@ -17,18 +17,24 @@ const index = (req, res) =>{
 //rotta SHOW
 const show = (req, res) =>{
 
-  const id = parseInt(req.params.id);
+  //recupero il paramentro passato nell'indirizzo
+  const { id } = req.params;
 
-  const post = posts.find(item => item.id === id);
+  //preparo la query
+  const sql = "SELECT * FROM posts WHERE id = ?";
 
- //controllo se il post è esistente, in caso contrario, return status 404 e un messaggio d’errore 
-  if(!post){
+  //eseguo la query
+  connection.query(sql, [id], (err, results) =>{
 
-    return res.status(404).json({ error : "404 NOT FOUND", message : "Il post NON è presente!"});
+    //controllo che non ci siano errori
+    if(err) return res.status(500).json({error: "Errore durante l'esecuzione della query" +err});
+
+    //controllo che la query effettivamente mi restituisca un array non vuoto
+    if(results.length === 0 ) return res.status(404).json({ error: "Post non trovato"});
+
+    res.json(results[0])
     
-  };
-
-  res.json(post);
+  });
 
 };
 
