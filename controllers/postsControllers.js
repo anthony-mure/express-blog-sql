@@ -1,6 +1,6 @@
 
 //importo l'array contenuto in dataPosts
-const posts = require('../data/dataPosts.js');
+const connection = require('../data/db.js');
 
 //rotta INDEX
 const index = (req, res) =>{
