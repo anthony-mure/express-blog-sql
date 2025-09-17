@@ -95,22 +95,16 @@ const modify = (req, res) =>{
 //rotta DELETE
 const destroy = (req, res) =>{
 
-  const id = parseInt(req.params.id);
+  const { id } = req.params;
 
-  const post = posts.find(item => item.id === id);
+  //instauro la connessione ed eseguo la query
+  const sql = "DELETE FROM posts WHERE id = ?";
 
-  //controllo se il post è esistente, in caso contrario, return status 404 e un messaggio d’errore 
-  if(!post){
+  connection.query(sql, [id], (err) =>{
 
-    return res.status(404).json({ error : "404 NOT FOUND", message : "Il post NON è presente!"});
-    
-  }
-
-  posts.splice(posts.indexOf(post), 1);
-
-  res.sendStatus(204);
-
-  console.log(posts);
+    if(err) return res.status(500).json({error: "Errore nell'esecuzione della query:" +err});
+    res.sendStatus(204);
+  })
 
 };
 
