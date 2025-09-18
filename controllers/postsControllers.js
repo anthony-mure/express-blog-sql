@@ -1,5 +1,5 @@
 
-//importo l'array contenuto in dataPosts
+//stabilisco la conessione al db importando il file db.js
 const connection = require('../data/db.js');
 
 //rotta INDEX
@@ -20,7 +20,7 @@ const show = (req, res) =>{
   //recupero il paramentro passato nell'indirizzo
   const { id } = req.params;
 
-  //preparo la query
+  //preparo la query per il post
   const sql = "SELECT * FROM posts WHERE id = ?";
 
   //eseguo la query
@@ -33,7 +33,7 @@ const show = (req, res) =>{
     if(results.length === 0 ) return res.status(404).json({ error: "Post non trovato"});
 
     res.json(results[0])
-    
+
   });
 
 };
